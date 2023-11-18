@@ -46,7 +46,7 @@ services:
     pull_policy: build
   mongo:
     restart: always
-    image: mongo:4.2.0
+    image: mongo:4.2.24
     volumes:
       - ./data:/data/db
     networks:
