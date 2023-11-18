@@ -6,13 +6,6 @@ networks:
 services:
   web:
     build: .
-    user: "node:node"
-    environment:
-      - APP_PORT=${APP_PORT:-3000}
-    volumes:
-      - "./app:/usr/src/app"
-    ports:
-      - "3000:3000"
     env_file:
       - stack.env
     labels:
