@@ -1,0 +1,62 @@
+services:
+  frontend:
+    build:
+      context: frontend
+      target: dev-envs
+    ports:
+      - 3000:3000
+    stdin_open: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    networks:
+      - react-express
+      - traefik
+    depends_on:
+      - backend
+    env_file:
+      - stack.env
+    labels:
+      - "traefik.docker.network=traefik"
+      - "traefik.enable=true"
+      - "traefik.http.routers.rustscope.entrypoints=websecure"
+      - "traefik.http.routers.rustscope.rule=Host(`rustscope.com`)"
+      - "traefik.http.routers.rustscope.tls.certresolver=letsencrypt"
+      - "traefik.http.services.rustscope.loadbalancer.server.port=3000"
+    pull_policy: build
+
+  backend:
+    restart: always
+    build:
+      context: backend
+      target: dev-envs
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - mongo
+    networks:
+      - express-mongo
+      - react-express
+    expose: 
+      - 3000
+    env_file:
+      - stack.env
+    pull_policy: build
+  mongo:
+    restart: always
+    image: mongo:4.2.0
+    volumes:
+      - ./data:/data/db
+    networks:
+      - express-mongo
+    expose:
+      - 27017
+    env_file:
+      - stack.env
+    pull_policy: build
+networks:
+  react-express:
+  express-mongo:
+  traefik:
+    external: true
+    name: traefik
