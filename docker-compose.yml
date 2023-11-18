@@ -7,7 +7,6 @@ services:
   rustscope:
     build:
       context: .
-      target: builder
     container_name: "rustscope"
     env_file:
       - stack.env
