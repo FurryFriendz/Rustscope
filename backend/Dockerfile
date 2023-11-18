@@ -5,8 +5,8 @@ FROM node:lts-buster-slim AS development
 # Create app directory
 WORKDIR /usr/src/app
 
-COPY package.json package.json
-COPY package-lock.json package-lock.json
+COPY package.json ./
+COPY package-lock.json ./
 RUN npm ci
 
 COPY . .
