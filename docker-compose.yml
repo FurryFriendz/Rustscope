@@ -1,11 +1,9 @@
-version: "3.9"
-networks:
-  traefik:
-    external: true
-    name: traefik
+version: '3'
 services:
-  web:
-    build: .
+  rustscope:
+    build:
+      context: .
+    container_name: rustscope
     env_file:
       - stack.env
     labels:
@@ -18,4 +16,6 @@ services:
     networks:
       traefik: null
     pull_policy: build
-    restart: always
+    restart: unless-stopped
+    volumes:
+      - /opt/docker/rustscope:/data
