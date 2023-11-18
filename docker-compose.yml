@@ -1,0 +1,28 @@
+version: '3'
+networks:
+  traefik:
+    external: true
+    name: traefik
+services:
+  rustscope:
+    build:
+      context: .
+      target: builder
+    container_name: "rustscope"
+    env_file:
+      - stack.env
+    hostname: "rustscope.com"
+    labels:
+      - "traefik.docker.network=traefik"
+      - "traefik.enable=true"
+      - "traefik.http.routers.rustscope.entrypoints=websecure"
+      - "traefik.http.routers.rustscope.rule=Host(`rustscope.com`)"
+      - "traefik.http.routers.rustscope.tls.certresolver=letsencrypt"
+      - "traefik.http.services.rustscope.loadbalancer.server.port=8000"
+    networks:
+      traefik: null
+    pull_policy: build
+    restart: unless-stopped
+    stop_signal: SIGINT
+    volumes:
+      - /opt/docker/rustscope:/data
