@@ -10,6 +10,7 @@ services:
     container_name: rustscope
     env_file:
       - stack.env
+    hostname: "rustscope.com"
     labels:
       - "traefik.docker.network=traefik"
       - "traefik.enable=true"
