@@ -15,5 +15,7 @@ services:
       - "traefik.http.routers.rustscope.rule=Host(`rustscope.com`)"
       - "traefik.http.routers.rustscope.tls.certresolver=letsencrypt"
       - "traefik.http.services.rustscope.loadbalancer.server.port=3000"
+    networks:
+      traefik: null
     pull_policy: build
     restart: always
